@@ -23,6 +23,10 @@ It worked fine on Fedora 15's rsyslogd, although I needed to turn on UDP in /etc
 `$ModLoad imudp
 $UDPServerRun 514`
 
+<h1>TODO</h1>
+
+I should really output errors to stderr.
+
 <h1>Licensing and Dependencies</h1>
 
 simplelogger is licensed under MIT.
