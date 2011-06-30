@@ -6,7 +6,21 @@ var colors = require("./colors");
 
 function simplelogger(options) {
 
-	this.filename = path.normalize(options.filename);
+	this.filename = "";
+	this.autolog = [];
+	this.autolog.file = false;
+	this.autolog.stdout = false;
+
+	if (options.filename.length > 0)
+		this.filename = path.normalize(options.filename);
+
+	if (typeof options.autolog === 'object') {
+
+		this.autolog.file = options.autolog.file || false;
+		this.autolog.stdout = options.autolog.stdout || false;
+
+	}
+
 	events.EventEmitter.call(this);
 
 }
@@ -110,6 +124,20 @@ simplelogger.prototype.check = function(cb) {
 
 // check() should have already been called
 simplelogger.prototype.log = function(msg, cb) {
+
+	var autolog = this.autolog;
+
+	if (autolog.file)
+		this.filelog(msg,cb);
+
+	if (autolog.stdout)
+		this.stdout(msg,cb);
+
+
+}
+
+// check() should have already been called
+simplelogger.prototype.filelog = function(msg, cb) {
 
 	var filename = this.filename;
 
