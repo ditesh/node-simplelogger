@@ -25,7 +25,7 @@ logger
 // I can log to file and stdout by specifying them
 logger
 .filelog("<file>Feeling like a champ", cb)
-.stdout("<stdout>Feeling like a champ"),
+.stdout("<stdout>Feeling like a champ")
 .stdout("<stdout>Feeling like a champ", true);
 
 // Or I can log to file and stdout automatically
