@@ -73,7 +73,6 @@ simplelogger.prototype.check = function(cb) {
 
 					fs.createWriteStream(filename, {flags: "a"})
 					.on("error", function(err) {
-
 						self.emit("check-fail");
 						cb({
 
@@ -140,10 +139,6 @@ simplelogger.prototype.check = function(cb) {
 				});
 			}
 		});
-	}
-
-	if (filename.length > 0) {
-
 	}
 
 	// Maintaining chainability
