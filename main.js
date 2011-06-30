@@ -16,9 +16,16 @@ function simplelogger(options) {
 
 	if (typeof options.autolog === 'object') {
 
-		this.autolog.file = options.autolog.file || false;
-		this.autolog.stdout = options.autolog.stdout || false;
+		var i = options.autolog.length;
 
+		while (i--) {
+
+			if (options.autolog[i] === "file")
+				this.autolog.file = true;
+			else if (options.autolog[i] === "stdout")
+				this.autolog.stdout = true;
+
+		}
 	}
 
 	events.EventEmitter.call(this);
@@ -125,6 +132,9 @@ simplelogger.prototype.check = function(cb) {
 // check() should have already been called
 simplelogger.prototype.log = function(msg, cb) {
 
+	if (typeof cb !== "function")
+		cb = function() {};
+
 	var autolog = this.autolog;
 
 	if (autolog.file)
@@ -192,11 +202,12 @@ simplelogger.prototype.filelog = function(msg, cb) {
 simplelogger.prototype.stdout = function(msg, error) {
 
 	var date = new Date();
+	var datestr = date.toDateString().substr(4).bold + " " + date.toTimeString().substr(0, 9).bold;
 
 	if (error)
-		util.puts(date.toDateString().substr(4).bold + " " + date.toTimeString().substr(0, 9).bold + msg.red);
+		util.puts(datestr + msg.red);
 	else
-		util.puts(date.toDateString().substr(4).bold + " " + date.toTimeString().substr(0, 9).bold + msg.blue);
+		util.puts(datestr + msg.blue);
 
 	// Maintaining chainability
 	return this;
