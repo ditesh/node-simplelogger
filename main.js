@@ -1,4 +1,5 @@
 var fs = require("fs");
+var ain = require("ain");
 var util = require("util");
 var path = require("path");
 var events = require("events");
@@ -6,13 +7,19 @@ var colors = require("./colors");
 
 function simplelogger(options) {
 
-	this.filename = "";
+	this.logfile = "";
+	this.syslogopts = {
+		tag: null,
+		facility: "user",
+		hostname: "localhost",
+	};
 	this.autolog = [];
 	this.autolog.file = false;
 	this.autolog.stdout = false;
+	this.autolog.syslog = false;
 
 	if (options.filename.length > 0)
-		this.filename = path.normalize(options.filename);
+		this.logfile = path.normalize(options.filename);
 
 	if (typeof options.autolog === 'object') {
 
@@ -24,7 +31,18 @@ function simplelogger(options) {
 				this.autolog.file = true;
 			else if (options.autolog[i] === "stdout")
 				this.autolog.stdout = true;
+			else if (options.autolog[i] === "syslog") {
 
+				this.autolog.syslog = true;
+
+				if (typeof options.syslogopts === "object") {
+
+					this.syslogopts.tag = options.syslogopts.tag || null;
+					this.syslogopts.facility = options.syslogopts.facility || "user";
+					this.syslogopts.hostname = options.syslogopts.hostname || "localhost";
+
+				}
+			}
 		}
 	}
 
@@ -37,7 +55,7 @@ util.inherits(simplelogger, events.EventEmitter);
 simplelogger.prototype.check = function(cb) {
 
 	var self = this;
-	var filename = this.filename;
+	var filename = this.logfile;
 
 	// If no functions are provided, we provide an empty function
 	// This may not be the best idea
@@ -124,12 +142,17 @@ simplelogger.prototype.check = function(cb) {
 		});
 	}
 
+	if (filename.length > 0) {
+
+	}
+
 	// Maintaining chainability
 	return this;
 
 }
 
 // check() should have already been called
+// Is this being done asynchronously correctly?
 simplelogger.prototype.log = function(msg, cb) {
 
 	if (typeof cb !== "function")
@@ -141,7 +164,11 @@ simplelogger.prototype.log = function(msg, cb) {
 		this.filelog(msg, cb);
 
 	if (autolog.stdout)
-		this.stdout(msg, false);
+		this.stdout(msg);
+
+	if (autolog.syslog)
+		this.syslog(msg);
+
 
 }
 
@@ -155,7 +182,7 @@ simplelogger.prototype.error = function(msg, cb) {
 		this.filelog(msg, cb);
 
 	if (autolog.stdout)
-		this.stdout(msg, true);
+		this.stdout(msg, "err");
 
 
 }
@@ -164,7 +191,7 @@ simplelogger.prototype.error = function(msg, cb) {
 // check() should have already been called
 simplelogger.prototype.filelog = function(msg, cb) {
 
-	var filename = this.filename;
+	var filename = this.logfile;
 
 	// If no functions are provided, we provide an empty function
 	// This may not be the best idea
@@ -199,15 +226,30 @@ simplelogger.prototype.filelog = function(msg, cb) {
 
 }
 
-simplelogger.prototype.stdout = function(msg, error) {
+simplelogger.prototype.syslog = function(msg) {
+
+	var tag = this.syslogopts.tag;
+	var facility = this.syslogopts.facility;
+	var hostname = this.syslogopts.hostname;
+	ain.set(tag, facility, hostname);
+	ain.log(msg);
+
+	// Maintaining chainability
+	return this;
+
+}
+
+simplelogger.prototype.stdout = function(msg, priority) {
 
 	var date = new Date();
 	var datestr = date.toDateString().substr(4).bold + " " + date.toTimeString().substr(0, 9).bold;
 
-	if (error)
+	if (priority === "err")
 		util.puts(datestr + msg.red);
-	else
+	else if (priority === undefined)
 		util.puts(datestr + msg.blue);
+	else
+		util.puts(datestr + msg.magenta);
 
 	// Maintaining chainability
 	return this;
