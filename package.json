@@ -11,6 +11,6 @@
         },
         "repository": { "type" : "git", "url" : "https://github.com/ditesh/node-simplelogger.git" },
 	"bugs":  { "web" : "http://github.com/ditesh/node-simplelogger/issues"},
-	"dependencies":  ["ain"],
+	"dependencies":  {"ain"},
         "main": "main.js"
 }
