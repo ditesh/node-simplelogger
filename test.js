@@ -25,11 +25,13 @@ logger
 // I can log to file and stdout by specifying them
 logger
 .filelog("<file>Feeling like a champ", cb)
-.stdout("<stdout>Feeling like a champ");
+.stdout("<stdout>Feeling like a champ"),
+.stdout("<stdout>Feeling like a champ", true);
 
 // Or I can log to file and stdout automatically
 // (because file and stdout autolog output is enabled)
-logger.log("<stdout & file>Feeling like a champ", cb);
+logger.log("<stdout & file>Feeling like a champ", cb); // Stdout in standard blue color
+logger.error("<stdout & file>Feeling like a champ", cb); // Stdout is in red color now
 
 // Perhaps I should work on this:
 // "Some log message".filelog().stdout().syslog();

@@ -128,13 +128,28 @@ simplelogger.prototype.log = function(msg, cb) {
 	var autolog = this.autolog;
 
 	if (autolog.file)
-		this.filelog(msg,cb);
+		this.filelog(msg, cb);
 
 	if (autolog.stdout)
-		this.stdout(msg,cb);
+		this.stdout(msg, false);
+
+}
+
+// check() should have already been called
+simplelogger.prototype.error = function(msg, cb) {
+
+	msg = "ERROR: " + msg;
+	var autolog = this.autolog;
+
+	if (autolog.file)
+		this.filelog(msg, cb);
+
+	if (autolog.stdout)
+		this.stdout(msg, true);
 
 
 }
+
 
 // check() should have already been called
 simplelogger.prototype.filelog = function(msg, cb) {
@@ -174,10 +189,14 @@ simplelogger.prototype.filelog = function(msg, cb) {
 
 }
 
-simplelogger.prototype.stdout = function(msg) {
+simplelogger.prototype.stdout = function(msg, error) {
 
 	var date = new Date();
-	util.puts(date.toDateString().substr(4).bold + " " + date.toTimeString().substr(0, 9).bold + msg.blue);
+
+	if (error)
+		util.puts(date.toDateString().substr(4).bold + " " + date.toTimeString().substr(0, 9).bold + msg.red);
+	else
+		util.puts(date.toDateString().substr(4).bold + " " + date.toTimeString().substr(0, 9).bold + msg.blue);
 
 	// Maintaining chainability
 	return this;
