@@ -53,7 +53,7 @@ simplelogger.prototype.check = function(cb) {
 
 				if (stats.isFile()) {
 
-					fs.createWriteStream(filename, {flags: "a", mode: 0600})
+					fs.createWriteStream(filename, {flags: "a"})
 					.on("error", function(err) {
 
 						self.emit("check-fail");
