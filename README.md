@@ -29,9 +29,9 @@ It worked fine on Fedora 15's rsyslogd, although I needed to turn on UDP in /etc
 
 I should really output errors to stderr.
 
-# Licensing and Dependencies
+# Dependencies & Licensing
 
-simplelogger is licensed under MIT.
+simplelogger is licensed under the erstwhile MIT license.
 
 Uses ain from https://github.com/akaspin/ain/ (installation through npm has ain as a dependency)
 Uses colors.js from https://github.com/Marak/colors.js (bundled in here)
