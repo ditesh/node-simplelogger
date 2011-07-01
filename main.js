@@ -64,7 +64,7 @@ simplelogger.prototype.check = function(cb) {
 
 	if (filename.length > 0) {
 
-		// Not the best approach, really
+		// Not the best approach, really, race conditions and what not
 		fs.stat(filename, function(err, stats) {
 
 			if (err === null) {
