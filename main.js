@@ -186,6 +186,7 @@ simplelogger.prototype.error = function(msg, cb) {
 // check() should have already been called
 simplelogger.prototype.filelog = function(msg, cb) {
 
+	var self=this;
 	var filename = this.logfile;
 
 	// If no functions are provided, we provide an empty function
@@ -197,7 +198,6 @@ simplelogger.prototype.filelog = function(msg, cb) {
 
 		fs.createWriteStream(filename, {flags: "a"})
 		.on("error", function(err) {
-
 			self.emit("log-fail");
 			cb({
 
