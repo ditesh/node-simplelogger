@@ -18,7 +18,7 @@ function simplelogger(options) {
 	this.autolog.stdout = false;
 	this.autolog.syslog = false;
 
-	if (options.filename.length > 0)
+	if (options.filename !== undefined && options.filename.length > 0)
 		this.logfile = path.normalize(options.filename);
 
 	if (typeof options.autolog === 'object') {
