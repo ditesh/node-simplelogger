@@ -97,7 +97,7 @@ simplelogger.prototype.log = function(msg, cb) {
 		this.stdout(msg);
 
 	if (this.autolog.stderr)
-		this.stdout(msg);
+		this.stderr(msg);
 
 	if (this.autolog.syslog)
 		this.syslog(msg);
@@ -144,7 +144,7 @@ simplelogger.prototype.debug = function(msg, cb) {
 	if (this.enabled.debug === false)
 		return this;
 
-	msg = "dEBUG: " + msg;
+	msg = "DEBUG: " + msg;
 	this.filelog(this.filenames.debuglog, msg, cb);
 
 	return this;
