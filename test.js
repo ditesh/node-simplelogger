@@ -1,9 +1,19 @@
 var simplelogger = require("./main.js").simplelogger;
 
-var logfile= "/tmp/exists";
+var logfile= "/var/log/messages";
 var logger = new simplelogger({
-	filename: logfile,
-	autolog: ["file", "stdout", "syslog"],
+	filenames: {
+		"default": "default.log",
+		debuglog: "debug.log",
+		infolog: "info.log",
+		warnlog: "warn.log",
+		errorlog: "error.log",
+	},
+
+	enable: ["default", "error", "warn", "info", "syslog", "stdout", "stderr"],
+
+	autolog: ["default", "stdout", "stderr", "syslog"],
+
 	syslogopts: {
 		tag: "node-test",
 		facility: "user",
@@ -17,29 +27,27 @@ var cb = function(err) { console.log(err); };
 // Perhaps check() should be called automatically in constructor
 // Should check() be synchronous? Hmm.
 logger
-.on("check-fail", cb)
-.on("log-fail", cb)
-.on("check-successful", function() {
+.on("log-fail", cb);
 
-	this.stdout("Check was successful");
-
-})
-.check();
-
-// I can log to file and stdout by specifying them
-// Priorities are: debug, info, notice, warning, err
-// which are prefixed to the message
-// Priorities make more sense for syslog, really :)
+// Default logging (you'd be using this most of the time)
 logger
-.filelog("This goes to a file", cb)
-.stdout("This goes out to stdout in blue")		// Outputs "This goes out to stdout" in fancy blue
-.stdout("This goes out to stdout in red", "err")	// Outputs "ERROR: This goes out to stdout" in red (only for err)
-.stdout("This goes out to stdout in magenta", "info");	// Outputs "INFO: This goes out to stdout" in magenta (default)
+.log("This goes out to default.log, syslog, stderr and stdout", cb); // Outputs "This goes out ..."
 
+// Error and stream (stdout, stderr) logging
+logger
+.error("This goes out to error.log")			// Outputs "ERROR: This goes out to error.log"
+.stderr("This goes out to stderr")			// Outputs "This goes out to stderr"
+.stdout("This goes out to stdout");			// Outputs "This goes out to stdout"
 
-// Or I can log to file and stdout automatically with a single call to log()
-// (because syslog, file and stdout autolog output is enabled)
-logger.log("This goes out to syslog, file & (stdout in blue)", cb);	// Stdout will be in blue color
-logger.error("This goes out to syslog, file & (stdout in red)", cb);	// Stdout will be in red color
+// Logging specific types
+logger
+.warn("This goes out to warn.log")			// Outputs "WARN: This goes out to warn.log"
+.info("This goes out to info.log")			// Outputs "INFO: This goes out to info.log"
+.debug("This goes out to debug.log")			// Outputs "DEBUG: This goes out to debug.log"
 
-
+// Enabling/disabling logger types
+logger
+.disable("error")
+.error("This goes out to error.log")			// No output
+.enable("error")
+.error("This goes out to error.log");			// Outputs "ERROR: This goes out to error.log"

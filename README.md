@@ -1,6 +1,6 @@
 # About
 
-A simple logging solution for output to a file, stdout and syslog. Does exactly what it should and no more.
+A simple logging solution for output to files, stdout and syslog. Does exactly what it should and no more.
 
 # Examples
 
@@ -8,13 +8,21 @@ Based on configuration options, the following code could automatically send the 
 
 	logger.log("Feeling like a champ");
 
-Or we could be more specific and just output to a file and stdout:
+Or we could be more specific and output to a file, stdout and stderr:
 
 	logger
-	.filelog("Feeling like a champ")
-	.stdout("Feeling like a champ");
+	.error("This goes out to error.log")                    // Outputs "ERROR: This goes out to error.log"
+	.stderr("This goes out to stderr")                      // Outputs "This goes out to stderr"
+	.stdout("This goes out to stdout");                     // Outputs "This goes out to stdout"
 
-See test.js for more examples.
+And we can the standard debug(), info(), warn(), error():
+
+	logger
+	.warn("This goes out to warn.log")			// Outputs "WARN: This goes out to warn.log"
+	.info("This goes out to info.log")			// Outputs "INFO: This goes out to info.log"
+	.debug("This goes out to debug.log")			// Outputs "DEBUG: This goes out to debug.log"
+
+See `test.js` for more examples.
 
 # Syslog settings
 
@@ -24,10 +32,6 @@ It worked fine on Fedora 15's rsyslogd, although I needed to turn on UDP in /etc
 
 	$ModLoad imudp
 	$UDPServerRun 514
-
-# TODO
-
-I should really output errors to stderr.
 
 # Dependencies & Licensing
 
