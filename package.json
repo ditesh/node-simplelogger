@@ -1,16 +1,16 @@
 {
-	"name": "simplelogger",
-        "version": "v0.1.0",
-        "description": "A simple logging solution  supporting file, stdout and syslog output",
-        "homepage": "https://github.com/ditesh/node-simplelog",
-	"keywords": ["server", "logging", "log", "syslog", "util", "utility"],
-        "author": {
-                "name": "Ditesh Shashikant Gathani",
-                "email": "ditesh@gathani.org",
-                "url": "http://ditesh.gathani.org/blog/"
-        },
-        "repository": { "type" : "git", "url" : "https://github.com/ditesh/node-simplelogger.git" },
-	"bugs":  { "web" : "http://github.com/ditesh/node-simplelogger/issues"},
-	"dependencies":  {"ain": ">=0.0.1"},
-        "main": "main.js"
+    "name": "simplelogger",
+    "version": "v0.1.0",
+    "description": "A simple logging solution  supporting file, stdout and syslog output",
+    "homepage": "https://github.com/ditesh/node-simplelog",
+    "keywords": ["server", "logging", "log", "syslog", "util", "utility"],
+    "author": {
+        "name": "Ditesh Shashikant Gathani",
+        "email": "ditesh@gathani.org",
+        "url": "http://ditesh.gathani.org/blog/"
+    },
+    "repository": { "type" : "git", "url" : "https://github.com/ditesh/node-simplelogger.git" },
+    "bugs":  { "url" : "http://github.com/ditesh/node-simplelogger/issues"},
+    "dependencies":  {"ain": ">=0.0.1"},
+    "main": "main.js"
 }

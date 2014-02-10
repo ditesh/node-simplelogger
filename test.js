@@ -2,12 +2,12 @@ var simplelogger = require("./main.js").simplelogger;
 
 var logfile= "/var/log/messages";
 var logger = new simplelogger({
-	filenames: {
-		default: "default.log",
-		debuglog: "debug.log",
-		infolog: "info.log",
-		warnlog: "warn.log",
-		errorlog: "error.log",
+	destinations: {
+		default: ["stdout", "default.log"],
+		debuglog: ["debug.log"],
+		infolog: ["stdout", "info.log"],
+		warnlog: ["warn.log"],
+		errorlog: ["stderr", "error.log"],
 	},
 
 	enable: ["default", "error", "warn", "info", "debug", "syslog", "stdout", "stderr"],
